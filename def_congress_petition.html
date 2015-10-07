@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="large-12 medium-12 small-12 columns">
+  <div class="large-12 medium-12 small-12 columns" style="padding-top:3%;">
 
     {% if page.headline.size > 0 %}
     <h2 class="headline">{{ page.headline }}</h2>
@@ -14,43 +14,28 @@
 
 {% if page.petition.content.size > 0 %}
       <div class="medium-6 columns">
+        <p style="font-size: 12pt;"><img src="tranquility.png" alt="tranquility.png" width="100%" /></p>
         <div id="petition-content" style="display:none;">
           {{ page.petition.content }}
       </div>
-      <p id="sum"><i>
-          	Our federal government is on a dangerous course. I believe it's time for real solutions. Please support calling a Convention of States to place fiscal restraints on the federal government, limit its power and jurisdiction, and impose term limits on its officials. <strong id="JS2">See full petition.</strong></i>
+        <div id="sum">
+          <p><i>Dear Legislator,</i></p>
+          <p style="margin-bottom:0;"><i>
+          	Our federal government is on a dangerous course. I believe it's time for real solutions. Please support calling a Convention of States to place fiscal restraints on the federal government, limit its power and jurisdiction, and impose term limits on its officials. </i>
           </p>
-      </div>
+        </div>
+        <p><a id="JS2">See full petition</a></p>
+
+<script>
+  $("#JS2").on("click", function () {
+      $("#petition-content").toggle();
+      $("#sum").toggle();
+    });
+        </script>
+
       {% endif %}
 
-    </div>
-    </div>
-
-    <div class="large-12 medium-12 small-12 columns">
-
-{% if page.petition.has_goal? %}
-{% assign thermo_width = 50 %}
-      <div class="clearfix">
-        <div class="progress" style="width: {{ thermo_width }}%;">
-          <div class="bar bar-success" style="width: {{ page.petition.percent_of_goal | times:100 }}%;">
-            {% if page.petition.signatures_count < 2 %}
-      <div class="bar-text">JUST STARTED</div>
-            {% else %}
-            <div class="bar-text">
-              {{ page.petition.signatures_count | number_with_commas }} {{ page.petition.signature_name | pluralize | upcase }}
-            </div>
-            {% endif %}
-          </div>
-        </div>
-        <div class="bar-goal">
-          {{ page.petition.goal | number_with_commas }} {{ page.petition.signature_name | pluralize | downcase }}
-        </div>
-      </div>
-      {% elsif page.petition.signatures_count > 4 %}
-      <div class="bar-goal">
-        {{ page.petition.signatures_count | number_with_commas }} {{ page.petition.signature_name | pluralize | downcase }}
-      </div>
-      {% endif %}
+        <!-- Changes here -->
 
 {% if page.petition.is_signed? %}
 
@@ -61,25 +46,7 @@
           <h3>Thank you for signing!</h3>
 
           <div class="form-errors">{% error_messages_for petition_signatures %}</div>
-          {% if page.is_commentable? %}
-          <label for="petition_signature_content">Change your comment</label>
-          {% text_area "content", class:"textarea autogrow" %}
-    {% endif %}
 
-    {% if page.petition.is_image? %}
-          <label for="petition_signature_image">Upload a picture (140x140)</label>
-          {% file_field "image", class:"file" %}
-    {% if petition_signature.has_image? %}
-          <p>
-            <img src="{{ petition_signature.large_square_image_url }}" width="140" height="140" border="0"/>
-          </p>
-          {% endif %}
-    {% endif %}
-
-    {% if page.is_commentable? %}
-    {% capture signature_name %}Update {{ page.petition.signature_name }}{% endcapture %}
-    {% submit_tag signature_name, class:"submit-button" %} &nbsp;
-    {% endif %}
 
     {% capture signature_name %}Remove {{ page.petition.signature_name }}{% endcapture %}
     {{ page.petition.current_signature | delete_link message: signature_name class_name: "button destroy-link" }}
@@ -108,11 +75,11 @@
           {% endif %}
 
     {% else %}
-          <h4>Will you sign?</h4>
+          <h4 style="margin:0;">Please sign:</h4>
           {% endif %}
           <div class="form-errors">{% error_messages_for petition_signature %}</div>
           {% if request.sorta_logged_in? == false or request.current_signup.has_name? == false %}
-          <div class="row padtopmore">
+          <div class="row padtopmore" style="padding-top:0">
 
             <div class="small-6 medium-6 columns">
               <label for="petition_signature_first_name">First Name</label>
@@ -181,39 +148,7 @@
           </div>
           {% endif %}
     {% endif %}
-    {% if page.is_commentable? %}
-          <div class="row">
 
-            <div class="columns">
-              <label for="petition_signature_content">Comments (optional)</label>
-              {% text_area "content", class:"textarea autogrow" %}
-            </div>
-
-          </div>
-          {% endif %}
-
-    {% if page.petition.is_image? %}
-          <div class="row">
-
-            <div class="columns">
-              <label for="petition_signature_image">Upload a picture (140x140)</label>
-              {% file_field "image", class:"file" %}
-            </div>
-
-          </div>
-          {% endif %}
-
-    {% if site.ask_to_publish_to_stream? %}
-          <div class="row">
-
-            <div class="columns">
-              <label class="checkbox" for="petition_signature_is_private">
-                {% check_box "is_private", class:"checkbox" %} Don't publish this on the website
-              </label>
-            </div>
-
-          </div>
-          {% endif %}
 
     {% if page.petition.is_volunteer? and site.ask_for_volunteers? %}
     {% if request.sorta_logged_in? == false or request.current_signup.is_volunteer == false %}
@@ -236,27 +171,18 @@
         </div>
         {% endform_for %}
 
-  {% if page.text_keyword_instructions.size > 0 %}
-        <div class="padbottom padtopmore">or {{ page.text_keyword_instructions }}</div>
-        {% endif %}
+             </div>
+    </div>
+    </div>
+
       </div>
       {% endif %}
 
-{% if page.tags_count > 0 %}
-      <div id="page-tags" class="page-tags">{% include "page_tags" with page %}</div>
-      {% endif %}
       <div class="like-page"> <strong>Share this page:</strong>
         {% include "like_page" %}
       </div>
-      {% if page.petition.is_image? and page.petition.signatures_with_images.size > 0 %}
-      <div class="padtop">
-        {% for signature in page.petition.signatures_with_images limit:4 %}
-        <img src="{{ signature.large_square_image_url }}" width="140" height="140">{% endfor %}</div>
-      {% endif %}
 
-{% if page.show_stream? %}
-{% include "page_stream" %}
-{% endif %}
+
     </div>
   </div>
 </div>
